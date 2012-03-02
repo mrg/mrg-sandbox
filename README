@@ -1,3 +1,12 @@
 Experimenting with Git!
 
 Does this allow commits from work?
+
+Some of the features of Cayenne include:
+
+* A GUI (Cayenne Modeler) for mapping database tables and columns to Java
+  classes and attributes, mapping relationships, generating Java classes,
+  defining callback and listener life cycle events, configuring caching
+  options, configuring database connection pools, reverse engineering
+  databases, database schema generation, defining shared queries, and mapping
+  stored procedures.
