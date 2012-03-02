@@ -14,3 +14,32 @@ Some of the features of Cayenne include:
 * Transactional management features (such as rollback, undo, commit) using
   Cayenne's control layer (the "context" -- described later) or optionally
   deferring to the container (such as JBoss) if in a J2EE environment.
+
+* Query language for database-independent run-time SQL generation of SELECT
+  statements (including table joins).
+
+* Automatic generation of INSERT, UPDATE, and DELETE statements when
+  committing the object graph to the database.  Cayenne determines the order
+  of operations (the dependency graph) needed to do the commit without the
+  developer having to worry about the order objects were added or edited.
+
+* Automatic transfer of database records and column data to Java objects and
+  back.
+
+* Relationship management for pre-fetching data or lazy-loading data.
+  Lazy-loading is handled completely transparently by Cayenne and no special
+  effort is required by the developer to make it work.
+
+* Optimistic locking support against real data instead of version number
+  columns to ensure data integrity.  When using a version number, it is
+  possible an outside source (such as a database administrator or another
+  application) updated a value and neglected to increment the version number.
+  Cayenne can detect real data changes and prevent overwriting them by
+  optimistically locking on the actual data.
+
+* Support for multiple databases, including accessing multiple databases (even
+  if the databases are from different vendors) at the same time.
+
+* Remote Object Persistence (ROP) for client/server operation.
+
+* XML serialization.
