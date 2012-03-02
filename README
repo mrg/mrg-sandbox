@@ -10,3 +10,7 @@ Some of the features of Cayenne include:
   options, configuring database connection pools, reverse engineering
   databases, database schema generation, defining shared queries, and mapping
   stored procedures.
+
+* Transactional management features (such as rollback, undo, commit) using
+  Cayenne's control layer (the "context" -- described later) or optionally
+  deferring to the container (such as JBoss) if in a J2EE environment.
