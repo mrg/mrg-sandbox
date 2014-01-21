@@ -1,0 +1,22 @@
+@import "constants.less";
+
+@tab-border-color: #6b97e5;
+
+.tab-content
+{
+  background-color: #f8f8f8;
+  border: 1px solid @tab-border-color;
+  padding: 12px;
+}
+
+.nav-tabs > li > a, .nav-tabs > li > a:hover
+{
+  border: 1px solid @tab-border-color;
+  border-bottom: none;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus
+{
+  border: 1px solid @tab-border-color;
+  border-bottom: none;
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+      xmlns:p="tapestry:parameter">
+
+  <t:remove>We depend on the body not rendering to the DOM, and instead rendering into TabTracker!</t:remove>
+  <t:body />
+
+  <ul id="${clientId}" class="nav nav-tabs">
+    <t:loop source="tabIds" value="tabId" index="tabNum">
+      <li class="${active}"><a href="#${tabId}" data-toggle="tab">${tabLabel}</a></li>
+    </t:loop>
+  </ul>
+
+  <div class="tab-content">
+    <t:loop source="tabIds" value="tabId" index="tabNum">
+      <div class="tab-pane ${active}" id="${tabId}">
+        <t:remove>Get the rendered markup that was put in TabTracker, above, in t:body.</t:remove>
+        <t:delegate to="tabMarkup" />
+      </div>
+    </t:loop>
+  </div>
+
+</html>
