@@ -6,7 +6,7 @@
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
       xmlns:p="tapestry:parameter">
 
-  <t:tabGroup t:clientId="innerTabs">
+  <t:tabGroup t:clientId="outerTabs">
     <t:tab t:title="one">
       one
     </t:tab>
@@ -17,7 +17,7 @@
 
     <t:tab t:title="three">
       three
-      <t:tabGroup t:clientId="outerTabs">
+      <t:tabGroup t:clientId="innerTabs">
         <t:tab t:title="four" t:requiredIndicator="business">four</t:tab>
         <t:tab t:title="five" t:requiredIndicator="database">five</t:tab>
       </t:tabGroup>
