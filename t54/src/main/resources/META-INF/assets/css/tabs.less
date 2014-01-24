@@ -1,6 +1,8 @@
 @import "constants.less";
+@import "mixins.less";
 
-@tab-border-color: #6b97e5;
+@tab-background-color: #cadafb;
+@tab-border-color: #375f93;
 
 .tab-content
 {
@@ -13,10 +15,23 @@
 {
   border: 1px solid @tab-border-color;
   border-bottom: none;
+  color: black;
+/*  .gradient(@tab-background-color, @tab-background-color, #e7ebf5);*/
+  .gradient(lighten(@tab-border-color, 40%), lighten(@tab-border-color, 50%), lighten(@tab-border-color, 40%));
 }
 
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus
 {
   border: 1px solid @tab-border-color;
   border-bottom: none;
+  color: white;
+  /* .gradient(@tab-border-color, @tab-border-color, #336fb8); */
+  .gradient(lighten(@tab-border-color, 4%), lighten(@tab-border-color, 8%), darken(@tab-border-color, 8%));
+}
+
+.nav > li > a
+{
+  border-radius: 5px 5px 0px 0px;
+  font-weight: bold;
+  padding: 4px 15px;
 }
