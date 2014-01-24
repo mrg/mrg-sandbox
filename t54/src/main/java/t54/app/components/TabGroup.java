@@ -20,7 +20,7 @@ import t54.models.TabTracker;
 @Import(module="bootstrap/tab", stylesheet="css/tabs.less")
 public class TabGroup
 {
-    @Parameter(defaultPrefix=BindingConstants.LITERAL, required=true)
+    @Parameter(defaultPrefix=BindingConstants.LITERAL)
     @Property
     private String clientId;
 
@@ -32,6 +32,9 @@ public class TabGroup
 
     @Property
     private int tabNum;
+
+    @Property
+    private String tabGroupId;
 
     // Work fields
 
@@ -65,7 +68,10 @@ public class TabGroup
      */
     void beginRender()
     {
-//        clientId = javaScriptSupport.allocateClientId(componentResources.getId());
+        if (clientId == null)
+            tabGroupId = javaScriptSupport.allocateClientId(componentResources);
+        else
+            tabGroupId = javaScriptSupport.allocateClientId(clientId);
 
         environment.push(TabTracker.class, new TabTracker());
     }
@@ -90,7 +96,7 @@ public class TabGroup
         for (int i = 0; i < tabTitles.size(); i++)
         {
 //            String id = javaScriptSupport.allocateClientId(componentResources);
-            String id = javaScriptSupport.allocateClientId(clientId + "_tab");
+            String id = javaScriptSupport.allocateClientId(tabGroupId + "_tab");
             tabIds.add(id);
         }
     }
@@ -100,8 +106,8 @@ public class TabGroup
         // We depend on http://getbootstrap.com/javascript/#tabs . We use its
         // Markup technique.
 //        javaScriptSupport.require("bootstrap/tab");
-        javaScriptSupport.require("TabGroup").invoke("ping").with(clientId);
-        javaScriptSupport.require("TabGroup").invoke("pong").with(clientId);
+        javaScriptSupport.require("TabGroup").invoke("ping").with(tabGroupId);
+        javaScriptSupport.require("TabGroup").invoke("pong").with(tabGroupId);
     }
 
     public String getTabTitle()

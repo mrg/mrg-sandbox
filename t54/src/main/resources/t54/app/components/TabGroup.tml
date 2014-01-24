@@ -7,7 +7,7 @@
   <t:remove>We depend on the body not rendering to the DOM, and instead rendering into TabTracker!</t:remove>
   <t:body />
 
-  <ul id="${clientId}" class="nav nav-tabs">
+  <ul id="tabGroupId" class="nav nav-tabs">
     <t:loop source="tabIds" value="tabId" index="tabNum">
       <li class="${active}">
         <a href="#${tabId}" data-toggle="tab">
