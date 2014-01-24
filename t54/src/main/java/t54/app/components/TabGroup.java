@@ -100,6 +100,8 @@ public class TabGroup
         // We depend on http://getbootstrap.com/javascript/#tabs . We use its
         // Markup technique.
 //        javaScriptSupport.require("bootstrap/tab");
+        javaScriptSupport.require("TabGroup").invoke("ping").with(clientId);
+        javaScriptSupport.require("TabGroup").invoke("pong").with(clientId);
     }
 
     public String getTabTitle()
