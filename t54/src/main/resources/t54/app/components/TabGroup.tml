@@ -9,7 +9,12 @@
 
   <ul id="${clientId}" class="nav nav-tabs">
     <t:loop source="tabIds" value="tabId" index="tabNum">
-      <li class="${active}"><a href="#${tabId}" data-toggle="tab">${tabLabel}</a></li>
+      <li class="${active}">
+        <a href="#${tabId}" data-toggle="tab">
+          <t:outputraw t:value="tabRequiredIndicator"/>
+          ${tabTitle}
+        </a>
+      </li>
     </t:loop>
   </ul>
 

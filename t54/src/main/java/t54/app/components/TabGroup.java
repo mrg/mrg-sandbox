@@ -23,7 +23,7 @@ public class TabGroup
     @Parameter(defaultPrefix=BindingConstants.LITERAL, required=true)
     @Property
     private String clientId;
-    
+
     @Property
     private List<String> tabIds;
 
@@ -37,7 +37,8 @@ public class TabGroup
 
     private TabTracker tabTracker;
 
-    private List<String> tabLabels;
+    private List<String> tabTitles;
+    private List<String> tabRequiredIndicators;
     private List<String> tabMarkups;
 
     // Generally useful bits and pieces
@@ -80,14 +81,13 @@ public class TabGroup
     {
         tabTracker = environment.pop(TabTracker.class);
 
-        tabLabels = tabTracker.getTitles();
+        tabTitles = tabTracker.getTitles();
+        tabRequiredIndicators = tabTracker.getRequiredIndicators();
         tabMarkups = tabTracker.getMarkups();
-
-        // Invent unique ids for each tab.
 
         tabIds = new ArrayList<String>();
 
-        for (int i = 0; i < tabLabels.size(); i++)
+        for (int i = 0; i < tabTitles.size(); i++)
         {
 //            String id = javaScriptSupport.allocateClientId(componentResources);
             String id = javaScriptSupport.allocateClientId(clientId + "_tab");
@@ -102,9 +102,14 @@ public class TabGroup
 //        javaScriptSupport.require("bootstrap/tab");
     }
 
-    public String getTabLabel()
+    public String getTabTitle()
     {
-        return tabLabels.get(tabNum);
+        return tabTitles.get(tabNum);
+    }
+
+    public String getTabRequiredIndicator()
+    {
+        return tabRequiredIndicators.get(tabNum);
     }
 
     public String getActive()

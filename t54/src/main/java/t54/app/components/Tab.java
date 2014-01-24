@@ -9,11 +9,15 @@ import org.apache.tapestry5.dom.Element;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 
+import t54.enums.RequiredIndicatorType;
 import t54.models.TabTracker;
 
 public class Tab
 {
-    @Parameter( allowNull = false, defaultPrefix = BindingConstants.LITERAL, required = true)
+    @Parameter(defaultPrefix = BindingConstants.LITERAL)
+    private RequiredIndicatorType requiredIndicator;
+
+    @Parameter(allowNull = false, defaultPrefix = BindingConstants.LITERAL, required = true)
     private String title;
 
     @Inject
@@ -34,12 +38,19 @@ public class Tab
 
     void afterRenderBody(MarkupWriter writer)
     {
+        String indicator = "";
+
+        if (requiredIndicator == RequiredIndicatorType.BUSINESS)
+            indicator = "<span class='business-required'>&hearts;</span>";
+        else if (requiredIndicator == RequiredIndicatorType.DATABASE)
+            indicator = "<span class='database-required'>&diams;</span>";
+
         // End the container and record the label the body's markup in the
         // TabTracker.
 
         Element bodyContainer = writer.getElement();
         writer.end();
-        tabTracker.addTab(title, bodyContainer.getChildMarkup());
+        tabTracker.addTab(title, indicator, bodyContainer.getChildMarkup());
 
         // Remove the container (and therefore the body's markup) from the DOM.
         // TabGroup will render the markup later at
