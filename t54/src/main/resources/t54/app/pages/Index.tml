@@ -18,8 +18,8 @@
     <t:tab t:title="three">
       three
       <t:tabGroup t:clientId="outerTabs">
-        <t:tab t:title="four">four</t:tab>
-        <t:tab t:title="five">five</t:tab>
+        <t:tab t:title="four" t:requiredIndicator="business">four</t:tab>
+        <t:tab t:title="five" t:requiredIndicator="database">five</t:tab>
       </t:tabGroup>
     </t:tab>
   </t:tabGroup>
