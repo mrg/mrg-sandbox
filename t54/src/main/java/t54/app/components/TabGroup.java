@@ -17,7 +17,7 @@ import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 import t54.models.TabTracker;
 
-@Import(module="bootstrap/tab", stylesheet="css/tabs.less")
+@Import(stylesheet="css/tabs.less")
 public class TabGroup
 {
     @Parameter(defaultPrefix=BindingConstants.LITERAL)
@@ -103,11 +103,7 @@ public class TabGroup
 
     void afterRender()
     {
-        // We depend on http://getbootstrap.com/javascript/#tabs . We use its
-        // Markup technique.
-//        javaScriptSupport.require("bootstrap/tab");
-        javaScriptSupport.require("TabGroup").invoke("ping").with(tabGroupId);
-        javaScriptSupport.require("TabGroup").invoke("pong").with(tabGroupId);
+        javaScriptSupport.require("TabGroup").invoke("activate").with(componentResources.getPageName(), tabGroupId);
     }
 
     public String getTabTitle()
