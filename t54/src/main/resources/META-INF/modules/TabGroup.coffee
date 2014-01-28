@@ -1,15 +1,27 @@
-define ["jquery"],
-    ($) ->
-        ping = (p) ->
-            console.log("I'm here! " + p);
+# Handle TabGroup Tab selections, remembering them across page requests.
+define ["bootstrap/tab", "jquery", "jquery.cookie"],
+    (tab, $) ->
+        # Activates a previously selected tab or selects the first tab.
+        #   pageName: The name of the current page.
+        #   tabGroupId: The DOM ID of the TabGroup.
+        activate = (pageName, tabGroupId) ->
+            # The name of the cookie is based on the Page Name and TabGroup DOM ID.
+            cookieName = "#{pageName}_tabgroup_#{tabGroupId}"
 
-        pong = (p) ->
-            console.log("I'm outta here! " + p);
+            # The Tab ID is the value of the cookie.
+            tabId = $.cookie(cookieName)
 
-#        console.log("I'm here!");
-#    $('[data-toggle="tooltip"]').tooltip({'placement': 'auto'})
-#    $('[data-toggle="popover"]').popover({trigger: 'hover focus', 'placement': 'auto'})
-#    $('#tooltip').tooltip()
+            # If the Tab ID has been set, show that tab again,
+            # otherwise show the first tab.
+            if tabId?
+                $("##{tabGroupId} a[href='#{tabId}']").tab("show")
+            else
+                $("##{tabGroupId} a:first").tab("show")
+
+            # Set up an event listener for when tabs are shown and record the
+            # selection in a session cookie.
+            $("##{tabGroupId} a[data-toggle='tab']").on 'shown.bs.tab', (e) ->
+                $.cookie(cookieName, $(e.target).attr("href"))
 
         # Exports.
-        { ping, pong }
+        { activate }
