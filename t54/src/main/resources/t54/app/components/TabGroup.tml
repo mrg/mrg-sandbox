@@ -7,9 +7,9 @@
   <t:remove>We depend on the body not rendering to the DOM, and instead rendering into TabTracker!</t:remove>
   <t:body />
 
-  <ul id="tabGroupId" class="nav nav-tabs">
+  <ul id="${tabGroupId}" class="nav nav-tabs">
     <t:loop source="tabIds" value="tabId" index="tabNum">
-      <li class="${active}">
+      <li>
         <a href="#${tabId}" data-toggle="tab">
           <t:outputraw t:value="tabRequiredIndicator"/>
           ${tabTitle}
@@ -20,7 +20,7 @@
 
   <div class="tab-content">
     <t:loop source="tabIds" value="tabId" index="tabNum">
-      <div class="tab-pane ${active}" id="${tabId}">
+      <div class="tab-pane" id="${tabId}">
         <t:remove>Get the rendered markup that was put in TabTracker, above, in t:body.</t:remove>
         <t:delegate to="tabMarkup" />
       </div>
