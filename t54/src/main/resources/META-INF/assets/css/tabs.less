@@ -11,6 +11,7 @@
   padding: 12px;
 }
 
+/* Inactive Tabs */
 .nav-tabs > li > a, .nav-tabs > li > a:hover
 {
   border: 1px solid @tab-border-color;
@@ -20,6 +21,7 @@
   .gradient(lighten(@tab-border-color, 40%), lighten(@tab-border-color, 50%), lighten(@tab-border-color, 40%));
 }
 
+/* Active Tab */
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus
 {
   border: 1px solid @tab-border-color;
@@ -34,4 +36,9 @@
   border-radius: 5px 5px 0px 0px;
   font-weight: bold;
   padding: 4px 15px;
+}
+
+.nav > li
+{
+  border-radius: 5px 5px 0px 0px;
 }
