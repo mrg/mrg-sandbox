@@ -116,10 +116,10 @@ public class TabGroup
         return tabRequiredIndicators.get(tabNum);
     }
 
-    public String getActive()
-    {
-        return tabNum == 0 ? "active" : "";
-    }
+//    public String getActive()
+//    {
+//        return tabNum == 0 ? "active" : "";
+//    }
 
     public RenderCommand getTabMarkup()
     {
