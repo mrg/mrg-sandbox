@@ -1,4 +1,20 @@
-# Handle TabGroup Tab selections, remembering them across page requests.
+# Handle TabGroup tab selections, remembering them across page requests by
+# storing them in the browser's sessionStorage object.
+#
+# The tab selections are stored in a map under the TabGroup key.  The keys in
+# the map are the page's name, an underscore, and the tab group's DOM ID.  By
+# using the page's name and the tab group's ID, multiple and nested tabs on a
+# page are supported.  The map's value is the HREF of the tab within the group.
+#
+# Example:
+#
+#  TabGroup = {"Index_outerTabs":"#outerTabs_tab_0"}
+#
+# The page name is "Index" and the tab group ID is "outerTabs".  If there were
+# more selections, there'd be more key/value pairings in the map.
+#
+# The primary interface is activate(pageName, tabGroupId), but remove(pageName)
+# and removeAll() also exist to clear out selections if needed.
 define ["jquery", "underscore", "bootstrap/tab"],
     ($, _) ->
         # The key used to store active tab groups.
@@ -44,9 +60,10 @@ define ["jquery", "underscore", "bootstrap/tab"],
         #   pageName: The name of the current page.
         #   tabGroupId: The DOM ID of the TabGroup.
         activate = (pageName, tabGroupId) ->
+            # Get the active tab (if present).
             activeTab = getActiveTab(pageName, tabGroupId)
 
-            # If the Tab ID has been set, show that tab again,
+            # If the active tab exists, show that tab again,
             # otherwise show the first tab.
             if activeTab?
                 $("##{tabGroupId} a[href='#{activeTab}']").tab("show")
@@ -62,19 +79,21 @@ define ["jquery", "underscore", "bootstrap/tab"],
         # Remove all active tabs for a page.
         #   pageName: The name of the current page.
         remove = (pageName) ->
-            # Get the keys in the active tab map.
+            # Get all the keys in the active tab map.
             activeTabMap = getActiveTabMap()
             keys         = _.keys(activeTabMap)
 
             # Loop over all the keys in the active tab map, rejecting the ones
-            # that match the page name, leaving a list of keys to keep.
+            # that match the page name, giving us a new list of keys to keep.
+            # Must use the page name's prefix to match all tabs on a page.
             keys = _.reject keys, (key) ->
-                key.indexOf(pageName + "_") == 0
+                pageNamePrefix = "#{pageName}_"
+                key.indexOf(pageNamePrefix) == 0
 
-            # Create a new map of remaining active tabs.
+            # Create a new map for the remaining active tabs.
             map = {}
 
-            # Build the map based upon non-rejected keys.
+            # Populate the map based upon non-rejected keys.
             for key in keys
                 map[key] = activeTabMap[key]
 
