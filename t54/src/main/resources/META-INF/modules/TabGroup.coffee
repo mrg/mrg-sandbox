@@ -2,23 +2,34 @@
 # storing them in the browser's sessionStorage object.
 #
 # The tab selections are stored in a map under the TabGroup key.  The keys in
-# the map are the page's name, an underscore, and the tab group's DOM ID.  By
-# using the page's name and the tab group's ID, multiple and nested tabs on a
-# page are supported.  The map's value is the HREF of the tab within the group.
+# the map are the page's name and the value for each page name is a map of tab
+# groups for that page.  The map of tab groups contains keys which are the
+# tab group's DOM ID and the values are the HREF of the tab within the group.
+#
+# By using the page's name and the tab group's ID, multiple and nested tabs on
+# a page are supported.
 #
 # Example:
 #
-#  TabGroup = {"Index_outerTabs":"#outerTabs_tab_0"}
+#  TabGroup = {"Index" : {"outerTabs":"#outerTabs_tab_0"}}
 #
-# The page name is "Index" and the tab group ID is "outerTabs".  If there were
-# more selections, there'd be more key/value pairings in the map.
+# The page name is "Index" and has one tab group stored ("outerTabs").  The
+# tab group's DOM ID is "outerTabs" with an active tab HEF of "#outerTabs_tab_0".
 #
 # The primary interface is activate(pageName, tabGroupId), but remove(pageName)
 # and removeAll() also exist to clear out selections if needed.
+#
+# This module needs jQuery, UnderscoreJS, and Bootstrap's Tab.
 define ["jquery", "underscore", "bootstrap/tab"],
     ($, _) ->
         # The key used to store active tab groups.
         tabGroupKey = "TabGroup"
+
+
+        # Saves the active tab map.
+        #   activeTabMap: The active tab map to save.
+        save = (activeTabMap) ->
+            sessionStorage.setItem(tabGroupKey, JSON.stringify(activeTabMap))
 
 
         # Gets the active tab map or an empty map if missing.
@@ -26,34 +37,37 @@ define ["jquery", "underscore", "bootstrap/tab"],
             JSON.parse(sessionStorage.getItem(tabGroupKey) ? null) ? {}
 
 
-        # Gets the active tab key.
+        # Gets the map of active tabs for a page or an empty map if missing.
+        #   activeTabMap: The global active tab map.
         #   pageName: The name of the current page.
-        #   tabGroupId: The DOM ID of the TabGroup.
-        getActiveTabKey = (pageName, tabGroupId) ->
-            "#{pageName}_#{tabGroupId}"
+        getPageNameMap = (activeTabMap, pageName) ->
+            activeTabMap[pageName] ? {}
 
 
-        # Gets the active tab.
+        # Gets the active tab (HREF) if defined.
         #   pageName: The name of the current page.
         #   tabGroupId: The DOM ID of the TabGroup.
         getActiveTab = (pageName, tabGroupId) ->
             activeTabMap = getActiveTabMap()
-            activeTabKey = getActiveTabKey(pageName,tabGroupId)
+            pageNameMap  = getPageNameMap(activeTabMap, pageName)
 
-            activeTabMap[activeTabKey]
+            pageNameMap[tabGroupId]
 
 
         # Sets the active tab.
         #   pageName: The name of the current page.
         #   tabGroupId: The DOM ID of the TabGroup.
-        #   activeTab: The #href of the active tab.
+        #   activeTab: The #HREF of the active tab.
         setActiveTab = (pageName, tabGroupId, activeTab) ->
-            activeTabMap               = getActiveTabMap()
-            activeTabKey               = getActiveTabKey(pageName,tabGroupId)
-            activeTabMap[activeTabKey] = activeTab
+            activeTabMap = getActiveTabMap()
+            pageNameMap  = getPageNameMap(activeTabMap, pageName)
+
+            # Set/reset the active tab entry.
+            pageNameMap[tabGroupId] = activeTab
+            activeTabMap[pageName]  = pageNameMap
 
             # Save updates.
-            sessionStorage.setItem(tabGroupKey, JSON.stringify(activeTabMap))
+            save(activeTabMap)
 
 
         # Activates a previously selected tab or selects the first tab.
@@ -70,8 +84,8 @@ define ["jquery", "underscore", "bootstrap/tab"],
             else
                 $("##{tabGroupId} a:first").tab("show")
 
-            # Set up an event listener for when tabs are shown and record the
-            # selection in the session.
+            # Set up an event listener for when tabs are clicked and record the
+            # selection in session storage.
             $("##{tabGroupId} a[data-toggle='tab']").on 'shown.bs.tab', (e) ->
                 setActiveTab(pageName, tabGroupId, $(e.target).attr("href"))
 
@@ -85,20 +99,18 @@ define ["jquery", "underscore", "bootstrap/tab"],
 
             # Loop over all the keys in the active tab map, rejecting the ones
             # that match the page name, giving us a new list of keys to keep.
-            # Must use the page name's prefix to match all tabs on a page.
             keys = _.reject keys, (key) ->
-                pageNamePrefix = "#{pageName}_"
-                key.indexOf(pageNamePrefix) == 0
+                key == pageName
 
             # Create a new map for the remaining active tabs.
             map = {}
 
-            # Populate the map based upon non-rejected keys.
+            # Populate the new map based upon non-rejected keys.
             for key in keys
                 map[key] = activeTabMap[key]
 
             # Save the new active tab map.
-            sessionStorage.setItem(tabGroupKey, JSON.stringify(activeTabMap))
+            save(activeTabMap)
 
 
         # Remove all active tabs.
