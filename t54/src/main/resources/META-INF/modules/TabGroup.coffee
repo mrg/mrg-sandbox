@@ -19,9 +19,9 @@
 # The primary interface is activate(pageName, tabGroupId), but remove(pageName)
 # and removeAll() also exist to clear out selections if needed.
 #
-# This module needs jQuery, UnderscoreJS, and Bootstrap's Tab.
-define ["jquery", "underscore", "bootstrap/tab"],
-    ($, _) ->
+# This module needs jQuery and Bootstrap's Tab.
+define ["jquery", "bootstrap/tab"],
+    ($) ->
         # The key used to store active tab groups.
         tabGroupKey = "TabGroup"
 
@@ -93,7 +93,7 @@ define ["jquery", "underscore", "bootstrap/tab"],
         # Remove all active tabs for a page.
         #   pageName: The name of the current page.
         remove = (pageName) ->
-            # Get all the keys in the active tab map.
+            # Get the active tab map (all pages).
             activeTabMap = getActiveTabMap()
 
             # Delete the page name entry.
