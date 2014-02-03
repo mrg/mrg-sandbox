@@ -95,19 +95,9 @@ define ["jquery", "underscore", "bootstrap/tab"],
         remove = (pageName) ->
             # Get all the keys in the active tab map.
             activeTabMap = getActiveTabMap()
-            keys         = _.keys(activeTabMap)
 
-            # Loop over all the keys in the active tab map, rejecting the ones
-            # that match the page name, giving us a new list of keys to keep.
-            keys = _.reject keys, (key) ->
-                key == pageName
-
-            # Create a new map for the remaining active tabs.
-            map = {}
-
-            # Populate the new map based upon non-rejected keys.
-            for key in keys
-                map[key] = activeTabMap[key]
+            # Delete the page name entry.
+            delete activeTabMap[pageName]
 
             # Save the new active tab map.
             save(activeTabMap)
